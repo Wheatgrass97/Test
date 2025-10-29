@@ -17,13 +17,13 @@ namespace Test.Helpers
 
             var trimmed = input.Trim();
 
-            // enum name (case-insensitive)
+            // Try parsing by Enum
             if (Enum.TryParse<TransactionStatus>(trimmed, ignoreCase: true, out status))
                 return true;
 
             var type = typeof(TransactionStatus);
 
-            // DisplayAttribute(Name)
+            // Try parsing by DisplayName
             foreach (var value in Enum.GetValues(type).Cast<Enum>())
             {
                 var member = type.GetMember(value.ToString()).FirstOrDefault();
@@ -38,7 +38,7 @@ namespace Test.Helpers
                 }
             }
 
-            // numeric parse
+            // Try parsing by numeric value
             if (int.TryParse(trimmed, out var numeric) && Enum.IsDefined(type, numeric))
             {
                 status = (TransactionStatus)numeric;
@@ -46,11 +46,6 @@ namespace Test.Helpers
             }
 
             return false;
-        }
-
-        public static TransactionStatus ParseOrDefault(string input, TransactionStatus defaultValue = default)
-        {
-            return TryParse(input, out var result) ? result : defaultValue;
         }
     }
 }

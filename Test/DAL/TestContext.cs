@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Data.Entity; // Assuming Entity Framework is used for data access
-using System.Data.Entity.Infrastructure; // For DbContext and related classes
-using Test.Models; // Assuming MoneySheet is defined in this namespace
+﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using Test.Models;
 
 namespace Test.DAL
 {

@@ -1,27 +1,19 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-using CsvHelper.Configuration.Attributes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.EnterpriseServices;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
-using System.Web.Util;
-using System.Xml;
 using System.Xml.Serialization;
 using Test.CsvClasses;
 using Test.DAL;
 using Test.Helpers;
 using Test.Models;
-using Test.XmlClasses;
 
 namespace Test.Controllers
 {
@@ -70,7 +62,7 @@ namespace Test.Controllers
 
                     transactionList = transactions.Items.Select(t =>
                     {
-                        Models.TransactionStatus statusValue = new Models.TransactionStatus();
+                        TransactionStatus statusValue = new TransactionStatus();
                         TransactionStatusExtensions.TryParse(t.Status, out statusValue);
 
                         return new TransactionModels
@@ -79,7 +71,7 @@ namespace Test.Controllers
                             Amount = t.PaymentDetails?.Amount ?? 0,
                             CurrencyCode = t.PaymentDetails?.CurrencyCode,
                             CreatedDate = t.TransactionDate,
-                            Status = statusValue  // assign enum value
+                            Status = statusValue
                         };
                     }).ToList();
 
@@ -94,7 +86,7 @@ namespace Test.Controllers
 
                     transactionList = records.Select(t =>
                     {
-                        Models.TransactionStatus statusValue = new Models.TransactionStatus();
+                        TransactionStatus statusValue = new TransactionStatus();
                         TransactionStatusExtensions.TryParse(t.Status, out statusValue);
 
                         return new TransactionModels
@@ -103,7 +95,7 @@ namespace Test.Controllers
                             Amount = t.Amount,
                             CurrencyCode = t.CurrencyCode,
                             CreatedDate = t.CreatedDate,
-                            Status = statusValue  // assign enum value
+                            Status = statusValue
                         };
                     }).ToList();
                     ViewBag.Message = "CSV file imported successfully.";
@@ -142,14 +134,6 @@ namespace Test.Controllers
             Response.StatusCode = (int)HttpStatusCode.OK;
             return View();
         }
-
-        //public bool HasNull(List<TransactionModels> tList)
-        //{
-        //    return tList.Any(item => item
-        //                    .GetType()
-        //                    .GetProperties()
-        //                    .Any(prop => prop.GetValue(item) == null));
-        //}
 
         public Exception ImportToDB(List<TransactionModels> tList)
         {
